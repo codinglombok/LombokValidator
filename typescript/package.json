@@ -1,0 +1,52 @@
+{
+  "name": "lombokvalidator",
+  "version": "0.1.0",
+  "description": "Zero-dependency input validation (string, number, schema, custom rules, sanitization) with i18n-ready errors. Byte-identical with the Rust reference.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist/src",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "validation",
+    "validator",
+    "sanitize",
+    "input",
+    "schema",
+    "i18n"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codinglombok/LombokValidator.git",
+    "directory": "typescript"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/test/vectors.test.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  },
+  "peerDependencies": {
+    "lomboklocale": "^0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "lomboklocale": {
+      "optional": true
+    }
+  }
+}

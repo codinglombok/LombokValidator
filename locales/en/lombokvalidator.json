@@ -1,0 +1,13 @@
+{
+  "validator.string.too_short": "{field} must be at least {min} characters (got {actual})",
+  "validator.string.too_long": "{field} must be at most {max} characters (got {actual})",
+  "validator.string.invalid_email": "{field} is not a valid email address",
+  "validator.string.invalid_url": "{field} is not a valid URL",
+  "validator.string.invalid_uuid": "{field} is not a valid UUID",
+  "validator.string.pattern_mismatch": "{field} does not match the required pattern",
+  "validator.number.below_min": "{field} must be at least {min} (got {actual})",
+  "validator.number.above_max": "{field} must be at most {max} (got {actual})",
+  "validator.number.not_positive": "{field} must be positive (got {actual})",
+  "validator.custom.not_even": "{field} must be an even number",
+  "validator.string.pattern_too_complex": "{field} pattern is too complex to evaluate safely"
+}

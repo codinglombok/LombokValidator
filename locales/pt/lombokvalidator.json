@@ -1,0 +1,13 @@
+{
+  "validator.string.too_short": "{field} deve ter pelo menos {min} caracteres (atual: {actual})",
+  "validator.string.too_long": "{field} deve ter no máximo {max} caracteres (atual: {actual})",
+  "validator.string.invalid_email": "{field} não é um endereço de e-mail válido",
+  "validator.string.invalid_url": "{field} não é uma URL válida",
+  "validator.string.invalid_uuid": "{field} não é um UUID válido",
+  "validator.string.pattern_mismatch": "{field} não corresponde ao padrão exigido",
+  "validator.string.pattern_too_complex": "O padrão de {field} é complexo demais para ser avaliado com segurança",
+  "validator.number.below_min": "{field} deve ser no mínimo {min} (atual: {actual})",
+  "validator.number.above_max": "{field} deve ser no máximo {max} (atual: {actual})",
+  "validator.number.not_positive": "{field} deve ser positivo (atual: {actual})",
+  "validator.custom.not_even": "{field} deve ser um número par"
+}

@@ -1,0 +1,13 @@
+{
+  "validator.string.too_short": "{field} 至少需要 {min} 个字符（当前 {actual} 个）",
+  "validator.string.too_long": "{field} 最多允许 {max} 个字符（当前 {actual} 个）",
+  "validator.string.invalid_email": "{field} 不是有效的电子邮件地址",
+  "validator.string.invalid_url": "{field} 不是有效的 URL",
+  "validator.string.invalid_uuid": "{field} 不是有效的 UUID",
+  "validator.string.pattern_mismatch": "{field} 不符合要求的格式",
+  "validator.string.pattern_too_complex": "{field} 的模式过于复杂，无法安全地进行评估",
+  "validator.number.below_min": "{field} 不得小于 {min}（当前 {actual}）",
+  "validator.number.above_max": "{field} 不得大于 {max}（当前 {actual}）",
+  "validator.number.not_positive": "{field} 必须为正数（当前 {actual}）",
+  "validator.custom.not_even": "{field} 必须为偶数"
+}

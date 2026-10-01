@@ -1,0 +1,12 @@
+# Salin ke <Repo>/.github/workflows/release.yml  (ganti LombokValidator & lombokvalidator)
+name: release
+on:
+  push:
+    branches: [main]
+jobs:
+  lombok-release:
+    uses: codinglombok/.github/.github/workflows/lombok-release.yml@main
+    with:
+      repo_name: LombokValidator
+      package_name: lombokvalidator
+    secrets: inherit

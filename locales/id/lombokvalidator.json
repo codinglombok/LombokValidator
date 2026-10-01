@@ -1,0 +1,13 @@
+{
+  "validator.string.too_short": "{field} minimal {min} karakter (saat ini {actual})",
+  "validator.string.too_long": "{field} maksimal {max} karakter (saat ini {actual})",
+  "validator.string.invalid_email": "{field} bukan alamat email yang valid",
+  "validator.string.invalid_url": "{field} bukan URL yang valid",
+  "validator.string.invalid_uuid": "{field} bukan UUID yang valid",
+  "validator.string.pattern_mismatch": "{field} tidak sesuai pola yang diharuskan",
+  "validator.number.below_min": "{field} minimal {min} (saat ini {actual})",
+  "validator.number.above_max": "{field} maksimal {max} (saat ini {actual})",
+  "validator.number.not_positive": "{field} harus bernilai positif (saat ini {actual})",
+  "validator.custom.not_even": "{field} harus berupa angka genap",
+  "validator.string.pattern_too_complex": "pola {field} terlalu kompleks untuk dievaluasi dengan aman"
+}

@@ -1,0 +1,25 @@
+[package]
+name = "lombokvalidator"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Zero-dependency validation: string/number/schema validators, custom trait-based rules, i18n-ready error messages via LombokLocale, sanitization."
+keywords = ["validation","validator","sanitize","input","no-std"]
+categories = ["parsing","no-std","text-processing"]
+rust-version = "1.75"
+repository = "https://github.com/codinglombok/LombokValidator"
+
+[lib]
+name = "lombokvalidator"
+path = "src/lib.rs"
+
+[dependencies]
+lomboklocale = { path = "../../LombokLocale/rust", default-features = false }
+
+[features]
+default = ["std"]
+std = ["lomboklocale/std"]
+
+# Test-only (not linked into the library): reads the cross-language vectors.
+[dev-dependencies]
+serde_json = "1"

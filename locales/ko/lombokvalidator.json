@@ -1,0 +1,13 @@
+{
+  "validator.string.too_short": "{field}은(는) 최소 {min}자여야 합니다 (현재 {actual}자)",
+  "validator.string.too_long": "{field}은(는) 최대 {max}자여야 합니다 (현재 {actual}자)",
+  "validator.string.invalid_email": "{field}은(는) 올바른 이메일 주소가 아닙니다",
+  "validator.string.invalid_url": "{field}은(는) 올바른 URL이 아닙니다",
+  "validator.string.invalid_uuid": "{field}은(는) 올바른 UUID가 아닙니다",
+  "validator.string.pattern_mismatch": "{field}이(가) 요구되는 형식과 일치하지 않습니다",
+  "validator.string.pattern_too_complex": "{field}의 패턴이 너무 복잡하여 안전하게 평가할 수 없습니다",
+  "validator.number.below_min": "{field}은(는) 최소 {min} 이상이어야 합니다 (현재 {actual})",
+  "validator.number.above_max": "{field}은(는) 최대 {max} 이하여야 합니다 (현재 {actual})",
+  "validator.number.not_positive": "{field}은(는) 양수여야 합니다 (현재 {actual})",
+  "validator.custom.not_even": "{field}은(는) 짝수여야 합니다"
+}

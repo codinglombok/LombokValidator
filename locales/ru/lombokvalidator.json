@@ -1,0 +1,13 @@
+{
+  "validator.string.too_short": "{field}: минимум {min} симв. (сейчас {actual})",
+  "validator.string.too_long": "{field}: максимум {max} симв. (сейчас {actual})",
+  "validator.string.invalid_email": "{field} не является допустимым адресом электронной почты",
+  "validator.string.invalid_url": "{field} не является допустимым URL",
+  "validator.string.invalid_uuid": "{field} не является допустимым UUID",
+  "validator.string.pattern_mismatch": "{field} не соответствует требуемому шаблону",
+  "validator.string.pattern_too_complex": "Шаблон для {field} слишком сложен для безопасной проверки",
+  "validator.number.below_min": "{field} должно быть не меньше {min} (сейчас {actual})",
+  "validator.number.above_max": "{field} должно быть не больше {max} (сейчас {actual})",
+  "validator.number.not_positive": "{field} должно быть положительным (сейчас {actual})",
+  "validator.custom.not_even": "{field} должно быть чётным числом"
+}

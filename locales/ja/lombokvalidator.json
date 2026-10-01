@@ -1,0 +1,13 @@
+{
+  "validator.string.too_short": "{field} は {min} 文字以上で入力してください（現在 {actual} 文字）",
+  "validator.string.too_long": "{field} は {max} 文字以内で入力してください（現在 {actual} 文字）",
+  "validator.string.invalid_email": "{field} は有効なメールアドレスではありません",
+  "validator.string.invalid_url": "{field} は有効なURLではありません",
+  "validator.string.invalid_uuid": "{field} は有効なUUIDではありません",
+  "validator.string.pattern_mismatch": "{field} は必要な形式に一致しません",
+  "validator.string.pattern_too_complex": "{field} のパターンは複雑すぎるため安全に評価できません",
+  "validator.number.below_min": "{field} は {min} 以上である必要があります（現在 {actual}）",
+  "validator.number.above_max": "{field} は {max} 以下である必要があります（現在 {actual}）",
+  "validator.number.not_positive": "{field} は正の値である必要があります（現在 {actual}）",
+  "validator.custom.not_even": "{field} は偶数である必要があります"
+}
