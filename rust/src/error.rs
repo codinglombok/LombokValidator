@@ -5,7 +5,32 @@
 
 use alloc::string::String;
 use alloc::vec::Vec;
-use lomboklocale::ArgValue;
+
+/// Typed message argument carried by every [`ValidationError`]. This type is
+/// part of the cross-language contract (serialized in the shared test
+/// vectors: `Str` as JSON string, `Int` as decimal string, `UInt`/`Float` as
+/// JSON numbers) — it is deliberately owned by LombokValidator, not
+/// LombokLocale, so locale API changes cannot shift the contract.
+#[derive(Debug, Clone, PartialEq)]
+pub enum ArgValue {
+    Str(String),
+    Int(i64),
+    UInt(u64),
+    Float(f64),
+}
+
+impl From<&ArgValue> for lomboklocale::Arg {
+    /// Convert into the catalog formatter's argument type. Only used at
+    /// message-rendering time; never part of the wire contract.
+    fn from(v: &ArgValue) -> Self {
+        match v {
+            ArgValue::Str(s) => lomboklocale::Arg::Str(s.clone()),
+            ArgValue::Int(i) => lomboklocale::Arg::from(*i),
+            ArgValue::UInt(u) => lomboklocale::Arg::from(*u),
+            ArgValue::Float(f) => lomboklocale::Arg::from(*f),
+        }
+    }
+}
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ValidationError {

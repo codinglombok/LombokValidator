@@ -22,7 +22,7 @@ pub mod sanitize;
 pub mod schema;
 pub mod string;
 
-pub use error::{ValidationError, ValidationResult};
+pub use error::{ArgValue, ValidationError, ValidationResult};
 pub use number::{
     is_float_str, is_integer_str, validate_positive_f64, validate_positive_i64, validate_range_f64,
     validate_range_i64,
@@ -35,9 +35,8 @@ pub use string::{
     validate_uuid,
 };
 
-// Re-export so downstream crates don't need a direct LombokLocale
-// dependency just to build error-message args.
-pub use lomboklocale::ArgValue;
+// ArgValue is defined locally (see error.rs) and converted to
+// `lomboklocale::Arg` only when rendering catalog messages.
 
 #[cfg(test)]
 mod integration_tests {
@@ -52,12 +51,12 @@ mod integration_tests {
         .unwrap();
         let err = validate_length("username", "ab", Some(4), None).unwrap_err();
         let e = &err[0];
-        let mut args: alloc::vec::Vec<(&str, ArgValue)> = e
+        let mut args: alloc::vec::Vec<(&str, lomboklocale::Arg)> = e
             .args
             .iter()
-            .map(|(k, v)| (k.as_str(), v.clone()))
+            .map(|(k, v)| (k.as_str(), lomboklocale::Arg::from(v)))
             .collect();
-        args.push(("field", ArgValue::Str(e.field.clone())));
+        args.push(("field", lomboklocale::Arg::Str(e.field.clone())));
         let msg = resolve("id", &catalog, e.code, e.message_id, &args);
         assert_eq!(msg.text, "username minimal 4 karakter (saat ini 2)");
     }

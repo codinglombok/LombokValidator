@@ -2,7 +2,7 @@
 
 Zero-dependency input validation: strings, numbers, schemas (nested), custom rules and sanitization, with i18n-ready errors.
 
-A standalone, general-purpose library of the **Lombok Ecosystem** — Tier **L1**. Requires [LombokLocale](../LombokLocale) (L0) for catalog-backed messages (ADR-009); LombokJSON (L0) is an optional, planned dependency for JSON-Schema validation (`json` feature, not in v0.1.0). The Rust crate currently depends on LombokLocale by path — switch to the registry version before publishing.
+A standalone, general-purpose library of the **Lombok Ecosystem** — Tier **L1**. Requires [LombokLocale](https://github.com/codinglombok/LombokLocale) (L0) for catalog-backed messages (ADR-009); LombokJSON (L0) is an optional, planned dependency for JSON-Schema validation (`json` feature, not in v0.1.0). The Rust crate currently depends on LombokLocale by path — switch to the registry version before publishing.
 
 > **Universal by design.** Usable by anyone — from small embedded devices to premium industrial software — without any application or framework. It is not part of, and not owned by, any app or server (e.g. RAG stacks); apps are merely example users. 
 
@@ -46,10 +46,10 @@ assert!(Signup { email: "a@b.co", age: 20 }.validate().is_ok());
 ### TypeScript
 
 ```bash
-cd typescript && npm install && npm test     # builds, then runs every shared vector
+cd typescript && npm ci && npm test     # builds ESM + CJS, then runs every shared vector
 ```
 
-Zero runtime dependencies, ESM, Node ≥ 18. See `docs/API_LombokValidator_v0.1.0.md` for the camelCase API.
+Zero runtime dependencies, dual **ESM + CJS** (`exports` map), Node ≥ 18. Coverage gate: `npm run coverage` (≥95% statements / ≥90% branches). See `docs/API_LombokValidator_0.1.0.md` for the camelCase API.
 
 ## Testing
 
@@ -57,11 +57,12 @@ Zero runtime dependencies, ESM, Node ≥ 18. See `docs/API_LombokValidator_v0.1.
 cd rust && cargo test --release                       # unit + robustness (pseudo-fuzz) + shared vectors
 cd rust && cargo build --no-default-features          # no_std + alloc proof
 cd typescript && npm test                             # same vectors, TypeScript port
+cd typescript && npm run coverage                     # c8 gate: ≥95% stmt / ≥90% branch
 LOMBOK_REGEN=1 cargo test --release --test vectors    # regenerate expected outputs from the Rust reference (review the diff!)
-./scripts/lombok-doctor-docs.sh LombokValidator                # 12 docs, versions, vector hash, license, no ownership claims
+./scripts/lombok-doctor-docs.sh LombokValidator .     # 13 docs, versions, vector hash, license, no ownership claims
 ```
 
-Vector inputs are authored in `vectors/gen_inputs.py` (deterministic); expected outputs come from the Rust reference and are reviewed by hand and, where possible, by independent checks. Changing any vector requires updating its SHA-256 in `docs/SPEC_LombokValidator_v0.1.0.md` (CI enforces it).
+Vector inputs are authored in `vectors/gen_inputs.py` (deterministic); expected outputs come from the Rust reference and are reviewed by hand and, where possible, by independent checks. Changing any vector requires updating its SHA-256 in `docs/SPEC_LombokValidator_0.1.0.md` (doctor script enforces it).
 
 
 

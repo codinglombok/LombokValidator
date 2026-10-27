@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # lombok doctor docs — ARCHITECTURE_UTAMA_v3.3 §5 / MASTERPLAN_UTAMA §5.
 # Checks, from a repo root:
-#   1. all 12 standard documents exist in docs/ (naming: <jenis>_<Repo>_v<ver>.md)
+#   1. all 13 standard documents exist in docs/ (naming: <Jenis>_<Repo>_<Ver>.md)
 #   2. version in filenames == manifest version (rust/Cargo.toml or typescript/package.json)
 #   3. SPEC_ contains the mandatory normative sentence verbatim
 #   4. SHA-256 of vectors/<package>-vectors-v1.json == hash stated in SPEC_
@@ -24,17 +24,17 @@ fi
 [ -n "$VER" ] || { err "cannot determine manifest version"; exit 1; }
 echo "repo=$REPO version=$VER"
 
-# --- 1+2: 12 documents with matching version
-DOCS="masterplan architecture changelog map structure_repo full_summary_project guide_how_to_use how_to_dist development_ide API Lang SPEC"
+# --- 1+2: 13 documents with matching version (DOCS PACK naming: <Jenis>_<Repo>_<Versi>.md)
+DOCS=(Masterplan Architecture Changelog Map "Stucture Repo" "TECH DEBT" "Full Summary Project" "Guide How to Use" "How To Dist" Development_idea Language API SPEC)
 count=0
-for d in $DOCS; do
-  f="docs/${d}_${REPO}_v${VER}.md"
+for d in "${DOCS[@]}"; do
+  f="docs/${d}_${REPO}_${VER}.md"
   if [ -f "$f" ]; then count=$((count+1)); else err "missing $f"; fi
 done
-echo "documents: $count/12"
+echo "documents: $count/13"
 
 # --- 3: normative sentence
-SPEC="docs/SPEC_${REPO}_v${VER}.md"
+SPEC="docs/SPEC_${REPO}_${VER}.md"
 S="This document is the normative cross-language contract. Every language port MUST produce byte-identical output for all specified inputs. Deviations from this specification are bugs."
 if [ -f "$SPEC" ]; then
   grep -qF "$S" "$SPEC" || err "SPEC lacks mandatory normative sentence"
@@ -72,7 +72,7 @@ for f in README.md docs/*.md; do
   if [ -n "$hits" ]; then err "ownership claim in $f (U1): $(echo "$hits" | head -1 | cut -c1-120)"; fi
 done
 # masterplan doc must carry the universal-principles section (U1-U12)
-MP="docs/masterplan_${REPO}_v${VER}.md"
+MP="docs/Masterplan_${REPO}_${VER}.md"
 if [ -f "$MP" ]; then
   grep -q "^## 2\. Prinsip Universal" "$MP" || err "masterplan lacks '## 2. Prinsip Universal' section"
   n="$(grep -c -E '^\| U(1[0-2]|[1-9]) \|' "$MP")"

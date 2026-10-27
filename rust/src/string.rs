@@ -4,9 +4,8 @@
 //! RFC 3986 parsers) — sufficient for input validation without pulling in
 //! an external dependency.
 
-use crate::error::{ValidationError, ValidationResult};
+use crate::error::{ArgValue, ValidationError, ValidationResult};
 use crate::pattern::{try_matches_pattern, PatternError};
-use lomboklocale::ArgValue;
 
 /// Structural email check with RFC 5321 length limits: `local@domain.tld`;
 /// local part 1–64 chars without whitespace/`@`; total ≤ 254; domain labels

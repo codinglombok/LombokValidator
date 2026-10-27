@@ -24,18 +24,5 @@ export function rustTrim(s: string): string {
   while (b > a && isRustWhitespace(cs[b - 1]!)) b--;
   return cs.slice(a, b).join("");
 }
-export const asciiLower = (s: string): string => s.replace(/[A-Z]/g, (c) => String.fromCharCode(c.charCodeAt(0) + 32));
-export const asciiUpper = (s: string): string => s.replace(/[a-z]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 32));
-export const eqIgnoreAsciiCase = (a: string, b: string): boolean => asciiLower(a) === asciiLower(b);
-export const isAsciiAlpha = (s: string): boolean => /^[A-Za-z]+$/.test(s);
-export const isAsciiAlnum = (s: string): boolean => /^[A-Za-z0-9]+$/.test(s);
+
 export const utf8Len = (s: string): number => new TextEncoder().encode(s).length;
-/** Byte-wise (== code point) ordering, like Rust `String: Ord` (JS default sorts UTF-16 units). */
-export function cmpCodePoints(a: string, b: string): number {
-  const x = chars(a), y = chars(b);
-  for (let i = 0; i < Math.min(x.length, y.length); i++) {
-    const d = x[i]!.codePointAt(0)! - y[i]!.codePointAt(0)!;
-    if (d !== 0) return d;
-  }
-  return x.length - y.length;
-}

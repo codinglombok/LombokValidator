@@ -1,7 +1,6 @@
 //! Number validators: range, integer/float shape, positivity.
 
-use crate::error::{ValidationError, ValidationResult};
-use lomboklocale::ArgValue;
+use crate::error::{ArgValue, ValidationError, ValidationResult};
 
 pub fn validate_range_i64(
     field: &str,

@@ -1,12 +1,99 @@
-# Salin ke <Repo>/.github/workflows/ci.yml  (ganti LombokValidator & lombokvalidator)
+# LombokValidator CI — ecosystem shared workflow + local gates (S6).
+# Job yang merujuk port/artefak yang belum ada diberi guard hashFiles agar
+# "skipped" (tetap hijau), BUKAN dihapus (DELTA B / S6).
 name: ci
 on:
   pull_request:
   push:
     branches: [main]
+
 jobs:
   lombok-ci:
     uses: codinglombok/.github/.github/workflows/lombok-ci.yml@main
     with:
       repo_name: LombokValidator
       package_name: lombokvalidator
+
+  rust:
+    name: rust (acuan) — clippy, no_std, test + vectors
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('rust/Cargo.toml') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      # Path dependency ../../LombokLocale/rust → sibling di luar workspace.
+      # (TECH DEBT: ganti ke versi registry sebelum publish crates.io.)
+      - name: Checkout LombokLocale sibling (path dependency)
+        run: git clone --depth 1 https://github.com/codinglombok/LombokLocale.git "$GITHUB_WORKSPACE/../LombokLocale"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - name: clippy -D warnings (S5)
+        working-directory: rust
+        run: cargo clippy --all-targets --all-features -- -D warnings
+      - name: no_std + alloc build proof
+        working-directory: rust
+        run: cargo build --no-default-features
+      - name: test — unit + robustness + catalogs + 1124 shared vectors
+        working-directory: rust
+        run: cargo test --release
+
+  typescript:
+    name: typescript (port wajib npm) — typecheck, test, coverage
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('typescript/package.json') != '' }}
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: typescript/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run coverage
+
+  python-port:
+    name: python port (belum ada — skipped sampai pyproject.toml ada)
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('python/pyproject.toml') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e '.[dev]'
+      - run: pytest --cov --cov-fail-under=95
+      - run: ruff check . && mypy --strict src
+
+  go-port:
+    name: go port (belum ada — skipped sampai go.mod ada)
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('go/go.mod') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - run: go vet ./...
+      - run: go test ./...
+
+  php-port:
+    name: php port (belum ada — skipped sampai composer.json ada)
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('php/composer.json') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - run: composer validate --strict
+      - run: composer install
+      - run: vendor/bin/phpstan analyse --max
+      - run: vendor/bin/phpunit

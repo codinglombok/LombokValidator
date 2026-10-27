@@ -1,7 +1,14 @@
 /rust/target
 /typescript/node_modules
 /typescript/dist
+/typescript/coverage
 node_modules/
 __pycache__/
 *.pyc
-/docs
+# ===== Lombok Ecosystem — dokumen internal (tidak di-commit) =====
+Map_*.md
+SPEC_*.md
+Stucture Repo_*.md
+TECH DEBT_*.md
+Architecture_*.md
+Masterplan_*.md
