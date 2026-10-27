@@ -1,65 +1,65 @@
 # Development Idea — LombokValidator 0.1.0
 
-Backlog ide terurut prioritas (P0 = sudah/sedang, P1 = berikutnya, P2/P3 = nanti) dengan kriteria selesai (Definition of Done) dan non-goals. Ide baru masuk sini dulu, lalu dipromosikan ke Masterplan/Milestone bila disetujui.
+Prioritized idea backlog (P0 = done/in progress, P1 = next, P2/P3 = later) with Definition of Done and non-goals. New ideas enter here first, then get promoted to Masterplan/Milestones once approved.
 
-## P0 — Fondasi (selesai di 0.1.0)
+## P0 — Foundation (done in 0.1.0)
 
-### ID-01 Kontrak vector lintas bahasa ✅
-Generator deterministik + 1124 kasus + harness Rust & TS. **DoD**: kedua bahasa lulus 100%; hash tercatat di SPEC; dokter dokumen memvalidasi. (Tercapai.)
+### ID-01 Cross-language vector contract ✅
+Deterministic generator + 1124 cases + Rust & TS harnesses. **DoD**: both languages pass 100%; hash recorded in the SPEC; doctor script validates documents. (Achieved.)
 
 ### ID-02 Anti-ReDoS by construction ✅
-Anggaran langkah 1.000.000 + fail-closed. **DoD**: kasus `a*a*a*a*a*a*c` pada 3000×`a` menghasilkan `PATTERN_TOO_COMPLEX`, bukan hang; pseudo-fuzz tidak panik. (Tercapai.)
+Step budget 1,000,000 + fail-closed. **DoD**: the `a*a*a*a*a*a*c` case on 3000×`a` yields `PATTERN_TOO_COMPLEX`, not a hang; pseudo-fuzz does not panic. (Achieved.)
 
-### ID-03 Dual build ESM+CJS ✅
-`exports` map lengkap + smoke paket. **DoD**: `import` dan `require` lulus contoh nyata dari tarball. (Tercapai.)
+### ID-03 Dual ESM+CJS build ✅
+Complete `exports` map + package smoke. **DoD**: both `import` and `require` pass a real example from the tarball. (Achieved.)
 
-## P1 — Berikutnya
+## P1 — Next
 
 ### ID-04 Registry dependency (TD-1)
-Ganti path-dep `lomboklocale` → crates.io. **DoD**: `cargo build` tanpa sibling clone; CI tanpa checkout sibling; publish dry-run bersih.
+Replace the `lomboklocale` path-dep → crates.io. **DoD**: `cargo build` without a sibling clone; CI without a sibling checkout; clean publish dry-run.
 
-### ID-05 Port ketiga (pilih python ATAU go sesuai prioritas README ekosistem)
-**DoD**: lulus 100% vector file yang sama; ruff/mypy strict atau go vet CLEAN; coverage ≥95/90; job CI ber-hashFiles menyala (tidak lagi skipped); dokumen Language diperbarui.
+### ID-05 Third port (pick python OR go per the ecosystem README priority)
+**DoD**: passes 100% of the same vector file; ruff/mypy strict or go vet CLEAN; coverage ≥95/90; the hashFiles-guarded CI job activates (no longer skipped); the Language document updated.
 
-### ID-06 Ekspansi vector dari lapangan
-Kumpulkan kasus salah-validasi nyata (issue) → jadikan vector dulu (red di port yang salah), baru perbaiki. **DoD**: setiap bug fix menyertakan ≥1 kasus vector baru + bump hash SPEC + entri Changelog.
+### ID-06 Vector expansion from the field
+Collect real mis-validation cases (issues) → turn them into vectors first (red on wrong ports), then fix. **DoD**: every bug fix ships ≥1 new vector case + SPEC hash bump + a Changelog entry.
 
-### ID-07 Gate coverage Rust di CI (TD-7)
-**DoD**: job rust menjalankan `cargo llvm-cov --fail-under-lines 95` hijau.
+### ID-07 Rust coverage gate in CI (TD-7)
+**DoD**: the rust job runs `cargo llvm-cov --fail-under-lines 95` green.
 
-## P2 — Menengah
+## P2 — Mid-term
 
-### ID-08 Review katalog oleh penutur asli (TD-3)
-**DoD**: minimal 5 bahasa bertanda "reviewed" di locales/STATUS.md dengan nama reviewer/tanggal.
+### ID-08 Catalog review by native speakers (TD-3)
+**DoD**: at least 5 languages marked "reviewed" in locales/STATUS.md with reviewer name/date.
 
-### ID-09 Opsi pesan langsung (non-katalog)
-API opsional `with_message_text` untuk aplikasi tanpa LombokLocale. **DoD**: default tetap struktur-only; vector tidak berubah; fitur off = byte-identical.
+### ID-09 Direct message option (non-catalog)
+Optional `with_message_text` API for applications without LombokLocale. **DoD**: default stays structure-only; vectors unchanged; feature off = byte-identical.
 
-### ID-10 Kumpulan preset skema umum
-Preset `signup`, `login`, `address` (komposisi validator yang ada saja, tanpa logika baru). **DoD**: preset murni fungsi pabrik; semua test vector tetap; docs cookbook diperbarui.
+### ID-10 Common schema preset collection
+Presets `signup`, `login`, `address` (composition of existing validators only, no new logic). **DoD**: presets are pure factory functions; all vector tests keep passing; docs cookbook updated.
 
-### ID-11 Benchmark deterministik
-Criterion (Rust) + benchmark Node untuk mesin pattern & is_email. **DoD**: angka disimpan dengan seed/timestamp; regression >20% menandai review (informasi, bukan gate).
+### ID-11 Deterministic benchmark
+Criterion (Rust) + Node benchmarks for the pattern engine & is_email. **DoD**: numbers stored with seed/timestamp; a >20% regression flags a review (informational, not a gate).
 
-## P3 — Jauh
+## P3 — Long-term
 
-### ID-12 Feature `json` (TD-8) — JSON-Schema subset via LombokJSON
-**DoD**: feature flag off tetap no_std; kontrak baru via vector tambahan; docs + Masterplan 0.6.0.
+### ID-12 `json` feature (TD-8) — JSON-Schema subset via LombokJSON
+**DoD**: feature flag off stays no_std; new contract via additional vectors; docs + Masterplan 0.6.0.
 
 ### ID-13 Derive macro (TD-9)
-**DoD**: crate terpisah; hasil derive identik dengan Schema manual pada test paralel.
+**DoD**: separate crate; derive output identical to the manual Schema in parallel tests.
 
 ### ID-14 WASM port
-Target `wasm32` untuk dipakai di browser/edge dengan hasil identik. **DoD**: suite vector lulus di wasm; jalur SIMD (bila ada) identik dengan skalar (DELTA B).
+`wasm32` target for browser/edge use with identical results. **DoD**: the vector suite passes on wasm; the SIMD path (if any) is identical to scalar (DELTA B).
 
-### ID-15 Katalog tambahan Core-20 (ar/hi/bn/tr/vi/th/it/pl/nl/uk) + bahasa Nusantara (jv/su/ms)
-**DoD**: kunci/placeholder identik (test otomatis) + review penutur; ar perlu keputusan RTL/BiDi di LombokLocale dulu.
+### ID-15 Additional Core-20 catalogs (ar/hi/bn/tr/vi/th/it/pl/nl/uk) + Nusantara languages (jv/su/ms)
+**DoD**: identical keys/placeholders (automated tests) + native-speaker review; `ar` needs the RTL/BiDi decision in LombokLocale first.
 
-## Non-goals (ditolak demi fokus & keamanan kontrak)
+## Non-goals (rejected for focus & contract safety)
 
-1. **Sanitizer HTML lengkap** — bukan wilayah pustaka ini (ADR-008; arahkan ke LombokHTML).
-2. **Parser email/URL RFC penuh** (quoted-local, IP-literal, comment folding) — subset struktural sudah dikunci kontrak; ekspansi hanya via kontrak baru (MAJOR/MINOR sesuai SPEC §10).
-3. **Regex penuh** (grup, lookaround, backreference, lazy) — melanggar determinisme lintas bahasa & anggaran keamanan (ADR-004).
-4. **Validasi lintas-field yang stateful/timing** (mis. konfirmasi password berbasis waktu) — milik aplikasi; pustaka tetap murni dan bebas efek samping.
-5. **Async I/O / network calls** — tidak akan pernah ada; semua fungsi murni.
-6. **Telemetry/loging bawaan** — tidak pernah ada (U10).
+1. **Full HTML sanitizer** — not this library's territory (ADR-008; redirect to LombokHTML).
+2. **Full RFC email/URL parser** (quoted-local, IP-literals, comment folding) — the structural subset is contract-locked; expansion only via a new contract (MAJOR/MINOR per SPEC §10).
+3. **Full regex** (groups, lookaround, backreferences, lazy) — breaks cross-language determinism & the security budget (ADR-004).
+4. **Stateful/timing cross-field validation** (e.g. time-based password confirmation) — belongs to the application; the library stays pure and side-effect free.
+5. **Async I/O / network calls** — will never exist; all functions are pure.
+6. **Built-in telemetry/logging** — will never exist (U10).

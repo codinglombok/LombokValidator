@@ -74,7 +74,7 @@ done
 # masterplan doc must carry the universal-principles section (U1-U12)
 MP="docs/Masterplan_${REPO}_${VER}.md"
 if [ -f "$MP" ]; then
-  grep -q "^## 2\. Prinsip Universal" "$MP" || err "masterplan lacks '## 2. Prinsip Universal' section"
+  grep -qE "^## 2\. (Prinsip Universal|Universal Principles)" "$MP" || err "masterplan lacks '## 2. Universal Principles' section"
   n="$(grep -c -E '^\| U(1[0-2]|[1-9]) \|' "$MP")"
   [ "$n" -eq 12 ] || err "universal evidence table has $n/12 rows"
 fi

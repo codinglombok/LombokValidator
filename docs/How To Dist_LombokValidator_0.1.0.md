@@ -1,89 +1,89 @@
 # How To Dist — LombokValidator 0.1.0
 
-Prosedur distribusi: build artefak, publish per registry, verifikasi pasca-rilis, dan rollback. Aturan mutlak ekosistem: **publish hanya atas perintah eksplisit pemilik repo** (lihat PUBLIKASI pada prompt sesi). Target publikasi resmi repo ini: **npm** (port TS) — sesuai BLOK REPO; crates.io mengikuti bila diminta.
+Distribution procedure: build artifacts, publish per registry, post-release verification, and rollback. Absolute ecosystem rule: **publish only on the explicit command of the repo owner** (see PUBLIKASI in the session prompt). This repo's official publication target: **npm** (TS port) — per the REPO BLOCK; crates.io follows if requested.
 
-## 1. Prasyarat rilis (semua wajib hijau)
+## 1. Release prerequisites (all must be green)
 
-| Gate | Perintah | Kriteria |
+| Gate | Command | Criteria |
 |---|---|---|
-| Rust test + vector | `cd rust && cargo test --release` | semua ok (35 test, 1124 vector) |
-| Rust toolchain ketat | `cd rust && cargo clippy --all-targets --all-features -- -D warnings` | nol warning |
-| Rust no_std | `cd rust && cargo build --no-default-features` | sukses |
-| Smoke acuan | `cd rust && cargo run --release --example smoke` | `SMOKE OK` |
-| TS test | `cd typescript && npm test` | 18/18 + 1124 vector |
-| TS coverage | `cd typescript && npm run coverage` | ≥95 stmt / ≥90 branch (aktual 99.18/98.89) |
-| Smoke paket | `npm pack` + smoke di dir bersih | ESM+CJS OK |
-| Dokumen | `./scripts/lombok-doctor-docs.sh LombokValidator .` | `OK: lombok doctor docs passed` |
-| Versi konsisten | `Cargo.toml` == `package.json` == nama dokumen docs | `0.1.0` |
+| Rust tests + vectors | `cd rust && cargo test --release` | all pass (35 tests, 1124 vectors) |
+| Rust strict toolchain | `cd rust && cargo clippy --all-targets --all-features -- -D warnings` | zero warnings |
+| Rust no_std | `cd rust && cargo build --no-default-features` | succeeds |
+| Reference smoke | `cd rust && cargo run --release --example smoke` | `SMOKE OK` |
+| TS tests | `cd typescript && npm test` | 18/18 + 1124 vectors |
+| TS coverage | `cd typescript && npm run coverage` | ≥95 stmt / ≥90 branch (actual 99.18/98.89) |
+| Package smoke | `npm pack` + smoke in a clean dir | ESM+CJS OK |
+| Documents | `./scripts/lombok-doctor-docs.sh LombokValidator .` | `OK: lombok doctor docs passed` |
+| Consistent version | `Cargo.toml` == `package.json` == docs filename version | `0.1.0` |
 
-## 2. Build artefak
+## 2. Build artifacts
 
-### 2.1 TypeScript (satu-satunya artefak publik wajib)
+### 2.1 TypeScript (the only mandatory public artifact)
 
 ```bash
 cd typescript
-npm ci                # reproducible dari package-lock.json
-npm run build         # dist/src (ESM + .d.ts) + dist/cjs (CJS + package.json bertipe commonjs)
+npm ci                # reproducible from package-lock.json
+npm run build         # dist/src (ESM + .d.ts) + dist/cjs (CJS + commonjs-typed package.json)
 npm pack --pack-destination ../dist-artifacts   # lombokvalidator-0.1.0.tgz
 ```
 
-Isi tgz dijaga `files`: `dist/src`, `dist/cjs`, `README.md`. Verifikasi cepat isi:
+The tgz contents are controlled by `files`: `dist/src`, `dist/cjs`, `README.md`. Quick content check:
 
 ```bash
 tar -tzf ../dist-artifacts/lombokvalidator-0.1.0.tgz | sort
-# wajib ada: dist/src/index.js, dist/src/index.d.ts, dist/cjs/index.js, dist/cjs/package.json
+# must include: dist/src/index.js, dist/src/index.d.ts, dist/cjs/index.js, dist/cjs/package.json
 ```
 
-### 2.2 Rust (bila crates.io diminta)
+### 2.2 Rust (if crates.io is requested)
 
 ```bash
 cd rust
-cargo build --release            # artefak rlib
-cargo package --list             # audit isi crate (jangan sampai target/ ikut)
-cargo package                    # .crate di target/package/
+cargo build --release            # rlib artifact
+cargo package --list             # audit crate contents (make sure target/ stays out)
+cargo package                    # .crate in target/package/
 ```
 
 ## 3. Publish per registry
 
-### 3.1 npm (port TS) — jalur utama
+### 3.1 npm (TS port) — primary path
 
 ```bash
-npm whoami                                       # WAJIB terverifikasi dulu
-npm view lombokvalidator version                 # WAJIB 404/belum ada 0.1.0
+npm whoami                                       # MUST be verified first
+npm view lombokvalidator version                 # MUST be 404/not yet 0.1.0
 cd typescript
-npm publish --access public                      # HANYA setelah konfirmasi eksplisit pemilik
+npm publish --access public                      # ONLY after the owner's explicit confirmation
 ```
 
-Checklist sebelum menekan enter: versi `package.json` = target rilis; `npm pack --dry-run` sudah diaudit; changelog + docs pack siap; CI hijau di commit yang sama.
+Checklist before pressing enter: `package.json` version = release target; `npm pack --dry-run` audited; changelog + docs pack ready; CI green on the same commit.
 
-### 3.2 crates.io (hanya bila diminta)
+### 3.2 crates.io (only if requested)
 
-Ganti dulu path-dep ke registry (TD-1): `lomboklocale = { version = "0.2", default-features = false }`, jalankan ulang semua gate, lalu:
+First replace the path-dep with the registry (TD-1): `lomboklocale = { version = "0.2", default-features = false }`, re-run all gates, then:
 
 ```bash
-cargo login <token>        # token dari owner, tanpa menyimpan di repo
+cargo login <token>        # token from the owner, never stored in the repo
 cargo publish --dry-run
 cargo publish
 ```
 
-Registry lain (PyPI/Packagist/go module) mengikuti prosedur resmi bahasanya — port python/go/php belum ada (stub), jadi tidak relevan di 0.1.0.
+Other registries (PyPI/Packagist/go modules) follow their language's official procedure — the python/go/php ports do not exist yet (stubs), so they are not relevant in 0.1.0.
 
-## 4. Verifikasi pasca-rilis
+## 4. Post-release verification
 
 1. `npm view lombokvalidator version` → `0.1.0`.
-2. Direktori bersih: `npm init -y && npm install lombokvalidator` → jalankan smoke (impor ESM + require CJS; contoh skrip ada di sesi engineering, `smoke-npm-dist.mjs`).
-3. Pastikan `dist/cjs/package.json` ikut terpasang (`ls node_modules/lombokvalidator/dist/cjs/`) — tanpa itu `require` gagal di paket `type: module`.
-4. (crates.io) `cargo add lombokvalidator` di proyek uji + `cargo test`.
-5. Buat git tag `v0.1.0` + GitHub Release dengan catatan = Changelog; tag menandai SHA commit yang persis dipublikasikan.
+2. Clean directory: `npm init -y && npm install lombokvalidator` → run the smoke (ESM import + CJS require; example script lives in the engineering session, `smoke-npm-dist.mjs`).
+3. Confirm `dist/cjs/package.json` is installed too (`ls node_modules/lombokvalidator/dist/cjs/`) — without it `require` fails under a `type: module` package.
+4. (crates.io) `cargo add lombokvalidator` in a test project + `cargo test`.
+5. Create the git tag `v0.1.0` + a GitHub Release with the Changelog as notes; the tag marks the exact published commit SHA.
 
 ## 5. Rollback
 
-- npm: `npm deprecate lombokvalidator@0.1.0 "alasan"` (jangan unpublish bila sudah dikonsumsi; npm hanya mengizinkan unpublish ≤72 jam dengan syarat ketat). Rilis patch `0.1.1` berisi fix, jelaskan di Changelog.
-- crates.io: tidak ada delete — yank (`cargo yank --vers 0.1.0`) lalu rilis versi baru.
-- Git: tag rusak → hapus tag (`git push --delete origin v0.1.0`), perbaiki, re-tag; jangan pernah memindahkan tag ke SHA lain setelah publikasi registry.
+- npm: `npm deprecate lombokvalidator@0.1.0 "reason"` (do not unpublish once consumed; npm only allows unpublish ≤72h under strict conditions). Ship a patch release `0.1.1` with the fix, explained in the Changelog.
+- crates.io: no deletion — yank (`cargo yank --vers 0.1.0`) then release a new version.
+- Git: broken tag → delete it (`git push --delete origin v0.1.0`), fix, re-tag; never move a tag to a different SHA after a registry publish.
 
-## 6. Pasca-rilis yang sering terlewat
+## 6. Post-release steps often missed
 
-- Perbarui badge/README: ganti kalimat "not yet published".
-- Arsipkan SHA-256 vector + hash tgz di catatan release (reproducibility audit).
-- Jalankan ulang `lombok-doctor-docs.sh` — dokumen dengan nama `[Versi]` lama tetap; versi baru berarti dokumen baru dibuat (naming ikut versi).
+- Update badges/README: replace the "not yet published" sentence.
+- Archive the SHA-256 of the vectors + the tgz hash in the release notes (reproducibility audit).
+- Re-run `lombok-doctor-docs.sh` — documents with the old `[Version]` name stay; a new version means new documents are created (naming follows the version).
